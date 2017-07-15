@@ -1,7 +1,7 @@
 # ch-insert
 Clickhouse HTTP interface data inserter.
 
-Two types for Clickhouse data insertion defined. One is inserting collected data via the HTTP interface as RowBinary and the other is bufferizer with guaranties on data integrity. These two methods both implemented io.Writer and are intended to be used with the [ch-encode](https://github.com/DenisCheremisov/ch-encode) produced RowBinary data encoder.
+Two types for Clickhouse data insertion defined. One is inserting collected data via the HTTP interface as RowBinary and the other is bufferizer with guaranties on data integrity. Both these objects implement io.Writer and are intended to be used with the [ch-encode](https://github.com/DenisCheremisov/ch-encode)-produced RowBinary data encoder.
 
 Usage example:
 ### First create table test and generate encoder using [ch-encode](https://github.com/DenisCheremisov/ch-encode)
