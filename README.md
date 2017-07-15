@@ -14,6 +14,7 @@ clickhouse-client --query "CREATE TABLE test
     
 mkdir test
 cd test
+export GOPATH=`pwd`
 go get -u github.com/DenisCheremisov/ch-encode
 go get -u github.com/DenisCheremisov/ch-insert
 echo 'uid: UID' > dict.yaml   # We want uid to be represented as UID in Go code
