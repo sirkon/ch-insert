@@ -40,3 +40,9 @@ func (bw *BufInsert) Write(p []byte) (n int, err error) {
 	}
 	return bw.buf.Write(p)
 }
+
+// Flush data
+func (bw *BufInsert) Flush() error {
+	_, err := bw.inserter.Write(bw.buf.Bytes())
+	return err
+}
