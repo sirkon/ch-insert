@@ -32,9 +32,9 @@ func NewBufInsert(inserter *CHInsert, limit int) *BufInsert {
 // It is guaranteed no old data will be lost on error
 func (bw *BufInsert) Write(p []byte) (n int, err error) {
 	if len(p)+bw.buf.Len() > bw.limit {
-		n, err = bw.inserter.Write(bw.buf.Bytes())
+		err = bw.Flush()
 		if err != nil {
-			return n, err
+			return -1, err
 		}
 		bw.buf.Reset()
 	}
@@ -43,6 +43,9 @@ func (bw *BufInsert) Write(p []byte) (n int, err error) {
 
 // Flush data
 func (bw *BufInsert) Flush() error {
+	if bw.buf.Len() == 0 {
+		return nil
+	}
 	_, err := bw.inserter.Write(bw.buf.Bytes())
 	return err
 }
