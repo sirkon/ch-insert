@@ -49,3 +49,8 @@ func (bw *BufInsert) Flush() error {
 	_, err := bw.inserter.Write(bw.buf.Bytes())
 	return err
 }
+
+// Close writer
+func (bw *BufInsert) Close() error {
+	return bw.Flush()
+}
