@@ -74,4 +74,5 @@ FROM test
 │ 2017-07-15 │ 123 │      1 │
 └────────────┴─────┴────────┘
 
-2 rows in set. Elapsed: 0.004 sec. ```
+2 rows in set. Elapsed: 0.004 sec.
+```
