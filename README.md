@@ -15,8 +15,8 @@ clickhouse-client --query "CREATE TABLE test
 mkdir test
 cd test
 export GOPATH=`pwd`
-go get -u github.com/glossina/ch-encode
-go get -u github.com/glossina/ch-insert
+go get -u github.com/sirkon/ch-encode
+go get -u github.com/sirkon/ch-insert
 echo 'uid: UID' > dict.yaml   # We want uid to be represented as UID in Go code
     
 bin/ch-encode --yaml-dict dict.yaml test  # Generate encoder package in current directory
@@ -34,7 +34,7 @@ import (
 	"time"
 	"test"
 
-	chinsert "github.com/glossina/ch-insert"
+	chinsert "github.com/sirkon/ch-insert"
 )
 
 func main() {
