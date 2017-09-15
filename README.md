@@ -46,10 +46,10 @@ func main() {
 	inserter := chinsert.NewBufInsert(rawInserter, 10*1024*1024)
 	defer inserter.Close()
 	encoder := test.NewTestRawEncoder(inserter)
-	if err := encoder.Encode(test.Date.FromTime(time.Now()), []byte("123"), 1); err != nil {
+	if err := encoder.Encode(test.Date.FromTime(time.Now()), test.UID("123"), test.Hidden(1)); err != nil {
 		panic(err)
 	}
-	if err := encoder.Encode(test.Date.FromTime(time.Now()), []byte("123"), 0); err != nil {
+	if err := encoder.Encode(test.Date.FromTime(time.Now()), test.UID("123"), test.Hidden(0)); err != nil {
 		panic(err)
 	}
 }
