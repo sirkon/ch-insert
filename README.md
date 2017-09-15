@@ -65,10 +65,10 @@ And see data in clickhouse test table:
 SELECT *
 FROM test 
 
-┌───────date─┬─uid─┬─hidden─┐
+┌──────date─┬─uid─┬──hidden─┐
 │ 2017-07-15 │ 123 │       0 │
 │ 2017-07-15 │ 123 │       1 │
-└───────────┴─── ─┴────────┘
+└───────────┴─────┴────────┘
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
