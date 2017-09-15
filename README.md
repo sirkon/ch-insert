@@ -12,20 +12,17 @@ clickhouse-client --query "CREATE TABLE test
     hidden UInt8
 ) ENGINE = MergeTree(date, (date, uid, hidden), 8192);" # Create table test
     
-mkdir test
-cd test
-export GOPATH=`pwd`
 go get -u github.com/sirkon/ch-encode
 go get -u github.com/sirkon/ch-insert
 echo 'uid: UID' > dict.yaml   # We want uid to be represented as UID in Go code
     
 bin/ch-encode --yaml-dict dict.yaml test  # Generate encoder package in current directory
 mv test src/                              # and move it to src/ in order for go <cmd> to be able to use it
-go install test                           # install generated package
 ```
 
 ### Usage
 ```go
+// file main.go
 package main
 
 import (
@@ -60,8 +57,7 @@ func main() {
 
 Run it:
 ```bash
-go install main
-bin/main
+go run main.go
 ```
 
 And see data in clickhouse test table:
