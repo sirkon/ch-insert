@@ -17,14 +17,14 @@ type ConnParams struct {
 	DBName   string
 }
 
-// CHInsert inserts data into the given clickhouse table via the HTTP interface
-type CHInsert struct {
+// Insert inserts data into the given clickhouse table via the HTTP interface
+type Insert struct {
 	client *http.Client
 	url    string
 }
 
-// NewCHInsert constructor
-func NewCHInsert(client *http.Client, params ConnParams, table string) *CHInsert {
+// New constructor
+func New(client *http.Client, params ConnParams, table string) *Insert {
 	r, err := http.NewRequest("POST", fmt.Sprintf("http://%s:%d/", params.Host, params.Port), nil)
 	if err != nil {
 		panic(err)
@@ -41,13 +41,13 @@ func NewCHInsert(client *http.Client, params ConnParams, table string) *CHInsert
 	}
 	q.Set("query", fmt.Sprintf("INSERT INTO %s FORMAT RowBinary", table))
 	r.URL.RawQuery = q.Encode()
-	return &CHInsert{
+	return &Insert{
 		client: client,
 		url:    r.URL.String(),
 	}
 }
 
-func (c *CHInsert) Write(p []byte) (n int, err error) {
+func (c *Insert) Write(p []byte) (n int, err error) {
 	request, err := http.NewRequest("POST", c.url, bytes.NewBuffer(p))
 	if err != nil {
 		return -1, err

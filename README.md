@@ -7,15 +7,15 @@ Usage example:
 ### First create table test and generate encoder using [ch-encode](https://github.com/DenisCheremisov/ch-encode)
 ```bash
 clickhouse-client --query "CREATE TABLE test
-    date Date, 
-    uid String, 
+    date Date,
+    uid String,
     hidden UInt8
 ) ENGINE = MergeTree(date, (date, uid, hidden), 8192);" # Create table test
-    
+
 go get -u github.com/sirkon/ch-encode
 go get -u github.com/sirkon/ch-insert
 echo 'uid: UID' > dict.yaml   # We want uid to be represented as UID in Go code
-    
+
 bin/ch-encode --yaml-dict dict.yaml test  # Generate encoder package in current directory
 mv test src/                              # and move it to src/ in order for go <cmd> to be able to use it
 ```
@@ -35,7 +35,7 @@ import (
 )
 
 func main() {
-	rawInserter := chinsert.NewCHInsert(
+	rawInserter := chinsert.New(
 		&http.Client{},
 		chinsert.ConnParams{
 			Host: "localhost",
@@ -43,7 +43,7 @@ func main() {
 		},
 		"test")
 
-	inserter := chinsert.NewBufInsert(rawInserter, 10*1024*1024)
+	inserter := chinsert.NewBuf(rawInserter, 10*1024*1024)
 	defer inserter.Close()
 	encoder := test.NewTestRawEncoder(inserter)
 	if err := encoder.Encode(test.Date.FromTime(time.Now()), test.UID("123"), test.Hidden(1)); err != nil {
@@ -63,7 +63,7 @@ go run main.go
 And see data in clickhouse test table:
 ```
 SELECT *
-FROM test 
+FROM test
 
 ┌──────date─┬─uid─┬──hidden─┐
 │ 2017-07-15 │ 123 │       0 │

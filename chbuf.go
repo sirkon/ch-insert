@@ -11,11 +11,11 @@ import (
 type BufInsert struct {
 	limit    int
 	buf      *bytes.Buffer
-	inserter *CHInsert
+	inserter *Insert
 }
 
-// NewBufInsert constructor
-func NewBufInsert(inserter *CHInsert, limit int) *BufInsert {
+// NewBuf constructor
+func NewBuf(inserter *Insert, limit int) *BufInsert {
 	if limit <= 0 {
 		panic(fmt.Errorf("Limit must be greater than 0, got %d", limit))
 	}
