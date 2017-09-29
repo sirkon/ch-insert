@@ -43,7 +43,7 @@ func main() {
 		},
 		"test")
 
-	inserter := chinsert.NewBuf(rawInserter, 10*1024*1024)
+	inserter := chinsert.NewBuf(rawInserter, 10*1024*1024) // 10Mb buffer
 	defer inserter.Close()
 	encoder := test.NewTestRawEncoder(inserter)
 	if err := encoder.Encode(test.Date.FromTime(time.Now()), test.UID("123"), test.Hidden(1)); err != nil {
