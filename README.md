@@ -16,8 +16,8 @@ go get -u github.com/sirkon/ch-encode
 go get -u github.com/sirkon/ch-insert
 echo 'uid: UID' > dict.yaml   # We want uid to be represented as UID in Go code
 
-bin/ch-encode --yaml-dict dict.yaml test  # Generate encoder package in current directory
-mv test src/                              # and move it to src/ in order for go <cmd> to be able to use it
+bin/ch-encode --yaml-dict dict.yaml --date-field date test  # Generate encoder package in current directory
+mv test src/                                                # and move it to src/ in order for go <cmd> to be able to use it
 ```
 
 ### Usage
