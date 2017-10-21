@@ -1,12 +1,12 @@
 # ch-insert
 Clickhouse HTTP interface data inserter.
 
-Clickhouse HTTP RowBinary inserter and special bufferizer. Both these objects implement io.Writer and are intended to be used with the [ch-encode](https://github.com/DenisCheremisov/ch-encode)-produced RowBinary data encoder.
+Clickhouse HTTP RowBinary insertion objects. They are meant to be used with [ch-encode](https://github.com/DenisCheremisov/ch-encode)-produced RowBinary data encoder.
 
 Usage example:
 ### First create table test and generate encoder using [ch-encode](https://github.com/DenisCheremisov/ch-encode)
 ```bash
-clickhouse-client --query "CREATE TABLE test
+clickhouse-client --query "CREATE TABLE test (
     date Date,
     uid String,
     hidden UInt8
@@ -41,7 +41,8 @@ func main() {
 			Host: "localhost",
 			Port: 8123,
 		},
-		"test")
+		"test",  // Table name to insert data in
+	)
 
 	inserter := chinsert.NewBuf(rawInserter, 10*1024*1024) // 10Mb buffer
 	defer inserter.Close()
