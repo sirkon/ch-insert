@@ -3,19 +3,19 @@ package chinsert
 import (
 	"bytes"
 	"fmt"
+	"io"
 )
 
-// BufInsert takes care of data integrity which is critical for the clickhouse insert task.
-// We cannot insert half of the clickhouse record, so each *Encoder output must be kept
-// unsplitted
+// BufInsert takes care of data integrity which is critical for the clickhouse data insertion.
+// We cannot insert half of the clickhouse record, so each Encoder's output must be kept unsplitted
 type BufInsert struct {
 	limit    int
 	buf      *bytes.Buffer
-	inserter *Insert
+	inserter io.Writer
 }
 
 // NewBuf constructor
-func NewBuf(inserter *Insert, limit int) *BufInsert {
+func NewBuf(inserter io.Writer, limit int) *BufInsert {
 	if limit <= 0 {
 		panic(fmt.Errorf("Limit must be greater than 0, got %d", limit))
 	}
@@ -36,7 +36,6 @@ func (bw *BufInsert) Write(p []byte) (n int, err error) {
 		if err != nil {
 			return -1, err
 		}
-		bw.buf.Reset()
 	}
 	return bw.buf.Write(p)
 }
@@ -47,6 +46,9 @@ func (bw *BufInsert) Flush() error {
 		return nil
 	}
 	_, err := bw.inserter.Write(bw.buf.Bytes())
+	if err == nil {
+		bw.buf.Reset()
+	}
 	return err
 }
 
