@@ -1,4 +1,6 @@
 # ch-insert
+[![Build Status](https://travis-ci.org/sirkon/ch-insert.svg?branch=master)](https://travis-ci.org/sirkon/ch-insert)
+
 Clickhouse HTTP interface data inserter.
 
 Clickhouse HTTP RowBinary insertion objects. They are meant to be used with [ch-encode](https://github.com/DenisCheremisov/ch-encode)-produced RowBinary data encoder.
