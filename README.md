@@ -22,29 +22,20 @@ mv test src/                                                # and move it to src
 
 ### Usage
 ```go
-// file main.go
 package main
 
 import (
-	"net/http"
 	"test"
 	"time"
-	"test"
 
 	chinsert "github.com/sirkon/ch-insert"
 )
 
 func main() {
-	rawInserter := chinsert.New(
-		&http.Client{},
-		chinsert.ConnParams{
-			Host: "localhost",
-			Port: 8123,
-		},
-		"test",  // Table name to insert data in
-	)
-
-	inserter := chinsert.NewBuf(rawInserter, 10*1024*1024) // 10Mb buffer
+	inserter, err := chinsert.Open("localhost:8123/default", "test", 10*1024*1024, 1024*1024*1024)
+	if err != nil {
+		panic(err)
+	}
 	defer inserter.Close()
 	encoder := test.NewTestRawEncoder(inserter)
 	if err := encoder.Encode(test.Date.FromTime(time.Now()), test.UID("123"), test.Hidden(1)); err != nil {
@@ -74,7 +65,43 @@ FROM test
 2 rows in set. Elapsed: 0.004 sec.
 ```
 
-### Real world usage
+### Lower level usage
+```go
+// file main.go
+package main
+
+import (
+	"net/http"
+	"test"
+	"time"
+
+	chinsert "github.com/sirkon/ch-insert"
+)
+
+func main() {
+	rawInserter := chinsert.New(
+		&http.Client{},
+		chinsert.ConnParams{
+			Host: "localhost",
+			Port: 8123,
+		},
+		"test",  // Table name to insert data in
+	)
+
+	inserter := chinsert.NewBuf(rawInserter, 10*1024*1024) // 10Mb buffer
+	defer inserter.Close()
+	encoder := test.NewTestRawEncoder(inserter)
+	if err := encoder.Encode(test.Date.FromTime(time.Now()), test.UID("123"), test.Hidden(1)); err != nil {
+		panic(err)
+	}
+	if err := encoder.Encode(test.Date.FromTime(time.Now()), test.UID("123"), test.Hidden(0)); err != nil {
+		panic(err)
+	}
+}
+```
+
+
+### Lower level with smart inserter
 It is [not recommended](https://clickhouse.yandex/docs/en/introduction/performance.html#performance-on-data-insertion)
 to insert more than 1 times per second (per writer I guess). There's an object that tries not to insert more than 1 time
 per second, usage:
