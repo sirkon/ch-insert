@@ -8,15 +8,6 @@ import (
 	"net/http"
 )
 
-// ConnParams client connection parameters
-type ConnParams struct {
-	Host     string
-	Port     int
-	User     string
-	Password string
-	DBName   string
-}
-
 // Insert inserts data into the given clickhouse table via the HTTP interface
 type Insert struct {
 	client *http.Client
@@ -34,7 +25,7 @@ func New(client *http.Client, params ConnParams, table string) *Insert {
 		q.Set("user", params.User)
 	}
 	if len(params.Password) > 0 {
-		q.Set("password", params.Password)
+		q.Set("password", string(params.Password))
 	}
 	if len(params.DBName) > 0 {
 		q.Set("database", params.DBName)
