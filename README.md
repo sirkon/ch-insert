@@ -3,10 +3,10 @@
 
 Clickhouse HTTP interface data inserter.
 
-Clickhouse HTTP RowBinary insertion objects. They are meant to be used with [ch-encode](https://github.com/DenisCheremisov/ch-encode)-produced RowBinary data encoder.
+Clickhouse HTTP RowBinary insertion objects. They are meant to be used with [ch-encode](https://github.com/sirkon/ch-encode)-produced RowBinary data encoder.
 
 Usage example:
-### First create table test and generate encoder using [ch-encode](https://github.com/DenisCheremisov/ch-encode)
+### First create table test and generate encoder using [ch-encode](https://github.com/sirkon/ch-encode)
 ```bash
 clickhouse-client --query "CREATE TABLE test (
     date Date,
