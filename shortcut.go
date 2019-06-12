@@ -11,7 +11,7 @@ var globalEpoch *EpochDirect
 var onceGlobalEcho sync.Once
 
 // Open is a shortcut to create SmartInsert writer over the http
-//   url clickhouse access URL including user, password, host, port and database name
+//   insertURL clickhouse access URL including user, password, host, port and database name
 //   table table name
 //   softLimit sets a buffer size where the writer will try to flush data when the amount of data written surpasses
 //             the value but then and only then when the last write happened more than a second ago
@@ -45,8 +45,8 @@ func Open(url, table string, softLimit, hardLimit int) (*SmartInsert, error) {
 		globalEpoch = NewEpochDirect()
 	})
 
-	client := New(&http.Client{}, params, table)
-	buf := NewBuf(client, hardLimit)
+	rawInsert := New(&http.Client{}, params, table)
+	buf := NewBuf(rawInsert, hardLimit)
 	res := NewSmartInsert(buf, softLimit, globalEpoch)
 	return res, nil
 }

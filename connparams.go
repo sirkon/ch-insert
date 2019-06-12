@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-//go:generate ldetool generate --package chinsert url.lde
+//go:generate ldetool generate --package chinsert insertURL.lde
 
 type Password string
 

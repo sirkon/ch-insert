@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+var _ WriterWithSchemaCheck = &SmartInsert{}
+
 // Epoch returns UNIX epoch time
 type Epoch interface {
 	Seconds() int64

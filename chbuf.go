@@ -3,21 +3,22 @@ package chinsert
 import (
 	"bytes"
 	"fmt"
-	"io"
 )
+
+var _ WriterWithSchemaCheck = &BufInsert{}
 
 // BufInsert takes care of data integrity which is critical for the clickhouse data insertion.
 // We cannot insert half of the clickhouse record, so each Encoder's output must be kept unsplitted
 type BufInsert struct {
 	limit    int
 	buf      *bytes.Buffer
-	inserter io.Writer
+	inserter *Insert
 }
 
 // NewBuf constructor
-func NewBuf(inserter io.Writer, limit int) *BufInsert {
+func NewBuf(inserter *Insert, limit int) *BufInsert {
 	if limit <= 0 {
-		panic(fmt.Errorf("Limit must be greater than 0, got %d", limit))
+		panic(fmt.Errorf("limit must be greater than 0, got %d", limit))
 	}
 	res := &BufInsert{
 		limit:    limit,
@@ -55,4 +56,9 @@ func (bw *BufInsert) Flush() error {
 // Close writer
 func (bw *BufInsert) Close() error {
 	return bw.Flush()
+}
+
+// Schema returns list of columns of this inserter's table
+func (bw *BufInsert) Schema() ([]Column, error) {
+	return bw.inserter.Schema()
 }
