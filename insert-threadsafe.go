@@ -12,22 +12,6 @@ type ThreadSafeInsert struct {
 	lock     sync.RWMutex
 }
 
-// Flush ...
-func (w *ThreadSafeInsert) Flush() error {
-	w.lock.Lock()
-	err := w.inserter.Flush()
-	w.lock.Unlock()
-	return err
-}
-
-// Close ...
-func (w *ThreadSafeInsert) Close() error {
-	w.lock.Lock()
-	err := w.inserter.Close()
-	w.lock.Unlock()
-	return err
-}
-
 func (w *ThreadSafeInsert) Write(p []byte) (n int, err error) {
 	w.lock.Lock()
 	n, err = w.inserter.Write(p)
