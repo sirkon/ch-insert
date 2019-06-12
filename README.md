@@ -34,11 +34,12 @@ import (
 )
 
 func main() {
-	inserter, err := chinsert.Open("localhost:8123/default", "test", 10*1024*1024, 1024*1024*1024)
+	ins, err := chinsert.Open("localhost:8123/default", "test", 10*1024*1024, 1024*1024*1024)
 	if err != nil {
 		panic(err)
 	}
 	defer inserter.Close()
+	inserter := ins.WithThreadSafe()
 	encoder := test.NewTestRawEncoder(inserter)
 	if err := encoder.Encode(test.Date.FromTime(time.Now()), test.UID("123"), test.Hidden(1)); err != nil {
 		panic(err)

@@ -71,3 +71,11 @@ func (si *SmartInsert) Write(p []byte) (n int, err error) {
 	}
 	return si.BufInsert.Write(p)
 }
+
+// WithThreadSafe returns thread safe insertion
+func (si *SmartInsert) WithThreadSafe() *ThreadSafeInsert {
+	res := ThreadSafeInsert{
+		inserter: si,
+	}
+	return &res
+}
